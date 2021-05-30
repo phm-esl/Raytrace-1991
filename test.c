@@ -57,7 +57,7 @@ int main() {
 
   fprintf(stderr,"sizeof(monochrome) = %lu\n",sizeof(monochrome));
 
-  for (y = 0 ; y < Height ; y++) {
+  for (y = Height ; --y >= 0 ;) {
     for (x = 0 ; x < Width; x++) {
 
       direction[0] = (FLT)(x - X0);
