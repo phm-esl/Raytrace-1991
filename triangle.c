@@ -18,6 +18,7 @@
 typedef struct TRIANGLE { /* Triangle object structure */
   FLT *A, *B, *C;	/* pointers to vertices */
   VEC normal;		/* unitised normal vector of the triangle */
+  VEC NxAB, NxBC, NxCA;	/* precompute for TriInOut */
   FLT D;		/* distance component for the plane equation */
   struct TRIANGLE *next; /* pointer to next triangle in linked list */
   struct SURF *surface;	/* pointer to a surface structure */
@@ -74,24 +75,15 @@ TRIANGLE *tri; {
 static int TriInOut(pnt, tri)
 POINT pnt;
 TRIANGLE *tri; {
-  FLT *N = tri->normal;
-  VEC AB, BC, CA;
-  VEC NxAB, NxBC, NxCA;
   VEC AP, BP, CP;
-
-  VecSub(AB,tri->A,tri->B);
-  VecSub(BC,tri->B,tri->C);
-  VecSub(CA,tri->C,tri->A);
-
-  VecCross(NxAB,N,AB);
-  VecCross(NxBC,N,BC);
-  VecCross(NxCA,N,CA);
 
   VecSub(AP,tri->A,pnt);
   VecSub(BP,tri->B,pnt);
   VecSub(CP,tri->C,pnt);
 
-  if ( VecDot(NxAB,AP) >= 0. && VecDot(NxBC,BP) >= 0. && VecDot(NxCA,CP) >= 0. )
+  if ( VecDot(tri -> NxAB,AP) >= 0.
+    && VecDot(tri -> NxBC,BP) >= 0.
+    && VecDot(tri -> NxCA,CP) >= 0. )
     return (TRUE);
   else
     return (FALSE);
@@ -292,6 +284,8 @@ SURF *surf; {
   VEC U, V, W, N;
   TRIANGLE *tp = NULL;
   static TRIANGLE *oldTri;
+  VEC AB, BC, CA;
+  VEC NxAB, NxBC, NxCA;
 
   if ((tp = (TRIANGLE *) calloc (sizeof(TRIANGLE),1)) == NULL)
     return (FALSE);
@@ -308,6 +302,19 @@ SURF *surf; {
   VecSub(V, rotvert[C], rotvert[A]);
   VecCross(W, U, V);
   VecUnit(N, W);
+
+  VecSub(AB, tp->A, tp->B);
+  VecSub(BC, tp->B, tp->C);
+  VecSub(CA, tp->C, tp->A);
+
+  VecCross(NxAB, N, AB);
+  VecCross(NxBC, N, BC);
+  VecCross(NxCA, N, CA);
+
+  VecCopy(tp -> NxAB, NxAB);
+  VecCopy(tp -> NxBC, NxBC);
+  VecCopy(tp -> NxCA, NxCA);
+
   VecCopy(tp -> normal, N);
   tp -> D = -VecDot(rotvert[A], N);
   tp -> surface = surf;
