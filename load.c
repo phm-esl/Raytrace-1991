@@ -9,7 +9,7 @@ MAT ViewMatrix;
 SURF Surface[64];
 
 
-FLT focal;
+int Focal, Width, Height;
 
 /*----------------------------------------------------------------------------*/
 
@@ -82,10 +82,11 @@ char *filename; {
       case '\n':
         break;
       case 'f':
-        /* focal distance */
-        fscanf (fp, "%f", &focal);
+        /* focal distance, width and height of image, in pixel units */
+        fscanf (fp, "%d %d %d", &Focal, &Width, &Height);
         rem (fp);
-        fprintf(stderr,"focal = %f\n",focal);
+        fprintf(stderr,"Focal = %d, Width = %d, Height = %d\n",
+          Focal, Width, Height);
         break;
       case 'v':
         /* vertex data follows */
