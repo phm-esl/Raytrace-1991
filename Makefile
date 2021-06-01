@@ -2,7 +2,7 @@ all:		image
 		display raytrace.pam
 
 image:		test
-		./test > raytrace.pam
+		./test | convert pam:- raytrace.png
 
 .PHONY: clean
 clean:
