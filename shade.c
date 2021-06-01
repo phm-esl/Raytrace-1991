@@ -130,7 +130,7 @@ COLOUR colour; {
   LIGHT *light = NULL;
   static LIGHT *lastlight;
 
-  if ((light = (LIGHT *) malloc (sizeof(LIGHT))) == NULL)
+  if ((light = (LIGHT *) calloc (sizeof(LIGHT),1)) == NULL)
     return (FALSE);
   if (lastlight == NULL)
     Light0 = light;

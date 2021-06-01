@@ -18,7 +18,7 @@ void write_pbm_p4();
 void PrtTriangle();
 
 int Width = 640;
-int Height = 800;
+int Height = 400;
 
 int main() {
 

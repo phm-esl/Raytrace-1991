@@ -1,6 +1,8 @@
-all:		test
+all:		image
+		display raytrace.pam
+
+image:		test
 		./test > raytrace.pam
-#		./test && display raytrace.pbm
 
 .PHONY: clean
 clean:

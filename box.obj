@@ -6,7 +6,7 @@ l  500  500 100 13000000 13000000 13000000 two lights
 
 u 1 1 1 1 surface details
 
-f 400 focal, 800 is normal focal length for a screen 640x400
+f 800 focal, 800 is normal focal length for a screen 640x400
 
 z
 
@@ -39,15 +39,15 @@ v -100  100 -100
 v -100 -100 -100
 v  100 -100 -100
 
- t 0 1 2 0
- t 2 3 0 0
- t 0 4 5 0
- t 5 1 0 0
- t 1 5 6 0
- t 6 2 1 0
- t 2 6 7 0
- t 7 3 2 0
- t 3 7 4 0
- t 4 0 3 0
- t 4 7 6 0
- t 6 5 4 0
+t 0 1 2 0
+t 2 3 0 0
+t 0 4 5 0
+t 5 1 0 0
+t 1 5 6 0
+t 6 2 1 0
+t 2 6 7 0
+t 7 3 2 0
+t 3 7 4 0
+t 4 0 3 0
+t 4 7 6 0
+t 6 5 4 0

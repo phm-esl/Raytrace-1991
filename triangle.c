@@ -71,72 +71,31 @@ TRIANGLE *tri; {
 +-------------------------------------------------------------------------------
 */
 
-static int cross();
-
 static int TriInOut(pnt, tri)
 POINT pnt;
 TRIANGLE *tri; {
+  FLT *N = tri->normal;
+  VEC AB, BC, CA;
+  VEC NxAB, NxBC, NxCA;
+  VEC AP, BP, CP;
 
-  int u = 0, v = 0; /* to identify U V coordinates */
-  FLT ua, va, ub, vb, uc, vc; /* coordinates in U V plane */
+  VecSub(AB,tri->A,tri->B);
+  VecSub(BC,tri->B,tri->C);
+  VecSub(CA,tri->C,tri->A);
 
-  /* discard dominant coordinate of normal */
+  VecCross(NxAB,N,AB);
+  VecCross(NxBC,N,BC);
+  VecCross(NxCA,N,CA);
 
-  if (abs(tri->normal[0]) < abs(tri->normal[1])) {
-    u = 0;
-    v = 1;
-    }
-  else {
-    u = 1;
-    v = 0;
-    }
-  if (abs(tri->normal[v]) > abs(tri->normal[2]))
-    v = 2;
+  VecSub(AP,tri->A,pnt);
+  VecSub(BP,tri->B,pnt);
+  VecSub(CP,tri->C,pnt);
 
-  /* triangle projected onto UV plane with pnt as origin */
-
-  ua = tri->A[u] - pnt[u];
-  va = tri->A[v] - pnt[v];
-
-  ub = tri->B[u] - pnt[u];
-  vb = tri->B[v] - pnt[v];
-
-  uc = tri->C[u] - pnt[u];
-  vc = tri->C[v] - pnt[v];
-
-
-  if ((
-    cross(ua, va, ub, vb)
-    + cross(ub, vb, uc, vc)
-    + cross(uc, vc, ua, va)
-    ) == 1)
+  if ( VecDot(NxAB,AP) >= 0. && VecDot(NxBC,BP) >= 0. && VecDot(NxCA,CP) >= 0. )
     return (TRUE);
   else
     return (FALSE);
-
   }
-
-
-static int cross (up, vp, uq, vq)
-FLT up, vp, uq, vq; {
-
-  if (up <= 0. && uq <= 0.)
-    return 0;		/* both points are behind the start of the ray */
-  else if (vp < 0. && vq < 0.)
-    return 0;		/* both points are below the U axis */
-  else if (vp >= 0. && vp >= 0.)
-    return 0;		/* both points are above the U axis */
-  else if (up > 0. && uq > 0.)
-    return 1;		/* points either side of the U axis */
-  else if (up > 0. || uq > 0.) {	/* the line might cross so compute... */
-    if (up - vp*(uq - up)/(vq - vp) > 0.)
-      return 1;		/* line crosses ray */
-    else
-      return 0;
-    }
-  return 0;
-  }
-
 
 /*
 +------------------------------- TriFirstHit() ---------------------------------
@@ -334,7 +293,7 @@ SURF *surf; {
   TRIANGLE *tp = NULL;
   static TRIANGLE *oldTri;
 
-  if ((tp = (TRIANGLE *) malloc (sizeof(TRIANGLE))) == NULL)
+  if ((tp = (TRIANGLE *) calloc (sizeof(TRIANGLE),1)) == NULL)
     return (FALSE);
   if (oldTri == NULL)
     Tri0 = tp;
