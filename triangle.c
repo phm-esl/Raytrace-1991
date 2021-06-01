@@ -281,11 +281,10 @@ POINT *rotvert;
 int A,B,C;
 SURF *surf; {
 
-  VEC U, V, W, N;
+  VEC U, V, W;
   TRIANGLE *tp = NULL;
   static TRIANGLE *oldTri;
   VEC AB, BC, CA;
-  VEC NxAB, NxBC, NxCA;
 
   if ((tp = (TRIANGLE *) calloc (sizeof(TRIANGLE),1)) == NULL)
     return (FALSE);
@@ -301,22 +300,17 @@ SURF *surf; {
   VecSub(U, rotvert[B], rotvert[A]);
   VecSub(V, rotvert[C], rotvert[A]);
   VecCross(W, U, V);
-  VecUnit(N, W);
+  VecUnit(tp -> normal, W);
 
   VecSub(AB, tp->A, tp->B);
   VecSub(BC, tp->B, tp->C);
   VecSub(CA, tp->C, tp->A);
 
-  VecCross(NxAB, N, AB);
-  VecCross(NxBC, N, BC);
-  VecCross(NxCA, N, CA);
+  VecCross(tp -> NxAB, tp -> normal, AB);
+  VecCross(tp -> NxBC, tp -> normal, BC);
+  VecCross(tp -> NxCA, tp -> normal, CA);
 
-  VecCopy(tp -> NxAB, NxAB);
-  VecCopy(tp -> NxBC, NxBC);
-  VecCopy(tp -> NxCA, NxCA);
-
-  VecCopy(tp -> normal, N);
-  tp -> D = -VecDot(rotvert[A], N);
+  tp -> D = -VecDot(rotvert[A], tp -> normal);
   tp -> surface = surf;
   oldTri = tp;
   return(TRUE);
@@ -349,9 +343,6 @@ void PrtTriangle() {
     fprintf(stderr,"surface <= %p\n", tp -> surface);
 
     tp = tp -> next;
-
-// Cconin(); // Atari ST only!
-
     }
   }
 
