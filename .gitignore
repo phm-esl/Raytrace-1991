@@ -1,5 +1,7 @@
 test
+.directory
 *.pam
 *.pbm
+*.png
 *.o
 *~
