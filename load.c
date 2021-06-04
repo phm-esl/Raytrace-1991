@@ -10,6 +10,7 @@ SURF Surface[64];
 
 
 int Focal, Width, Height;
+FLT Gamma = 1.0/2.2; // television default
 
 /*----------------------------------------------------------------------------*/
 
@@ -74,12 +75,19 @@ char *filename; {
 
   origin[0] = origin[1] = origin[2] = 0.;
   rotate[0] = rotate[1] = rotate[2] = 0.;
+  Gamma = 1.0/2.2;
 
   SetRotation(matrix, rotate);
 
   while ((c = fgetc (fp)) != EOF) {
     switch (c) {
       case '\n':
+        break;
+      case 'g':
+        fscanf (fp, "%f", &Gamma);
+        rem (fp);
+        fprintf(stderr,"Gamma = %f\n",Gamma);
+        Gamma = 1.0/Gamma;
         break;
       case 'f':
         /* focal distance, width and height of image, in pixel units */

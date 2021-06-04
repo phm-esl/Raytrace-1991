@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h> // calloc malloc(3)
 #include <unistd.h> // write(2)
+#include <math.h>
 
 /*
 +-------------------------------------------------------------------------------
@@ -19,11 +20,13 @@ void PrtTriangle();
 
 int main() {
   extern int Focal, Width, Height; // value loaded from input data file
+  extern FLT Gamma;
 
   int x, y;		/* Screen coordinates */
   RAY ray;		/* Primary ray */
   COLOUR colour;
-  unsigned char monochrome;
+  FLT monochrome;
+  unsigned char octet;
   FLT t;		/* result of Trace() */
   VEC direction;	/* Direction of the primary ray */
 
@@ -40,6 +43,7 @@ int main() {
 
   fprintf(stderr,"loaded object data\n");
   fprintf(stderr,"Focal = %d Width = %d Height = %d\n",Focal, Width, Height);
+  fprintf(stderr,"Gamma = %f\n",1.0/Gamma);
 
   fprintf(stdout,
     "P7\n"
@@ -62,9 +66,10 @@ int main() {
 
       t = Trace(colour, &ray);
 
-      monochrome = (unsigned char)(colour[0]+colour[1]+colour[2]);
+      monochrome = 64.0 * pow((colour[0]+colour[1]+colour[2])/64.0,Gamma);
+      octet = (unsigned char)(monochrome);
 
-      fwrite(&monochrome,sizeof(unsigned char),1,stdout);
+      fwrite(&octet,sizeof(unsigned char),1,stdout);
       }
     }
   PrtTriangle();
