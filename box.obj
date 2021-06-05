@@ -8,7 +8,8 @@ u 1 1 1 1 surface details
 
   g 1.0 Gamma value 1.0 to show no correction, default gamma value is 2.2
 
-f 1600 1280 800 focal, width and height
+ f 1600 1280 800 focal, width and height
+f 800 640 400
   800 is normal focal length for a screen 640x400
 
 z
