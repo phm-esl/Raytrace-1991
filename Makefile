@@ -1,5 +1,5 @@
 all:		image
-		display raytrace.pam
+		display raytrace.png
 
 image:		test
 		./test | convert pam:- raytrace.png
