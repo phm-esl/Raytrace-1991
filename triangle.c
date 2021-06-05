@@ -24,7 +24,7 @@ typedef struct TRIANGLE { /* Triangle object structure */
   struct SURF *surface;	/* pointer to a surface structure */
   } TRIANGLE;
 
-static TRIANGLE *Tri0;	/* pointer to first triangle in linked list */
+static TRIANGLE *Tri0 = NULL; /* pointer to first triangle in linked list */
 
 /*
 +--------------------------------- RayPlane() ----------------------------------
@@ -283,7 +283,7 @@ SURF *surf; {
 
   VEC U, V, W;
   TRIANGLE *tp = NULL;
-  static TRIANGLE *oldTri;
+  static TRIANGLE *oldTri = NULL;
   VEC AB, BC, CA;
 
   if ((tp = (TRIANGLE *) calloc (sizeof(TRIANGLE),1)) == NULL)

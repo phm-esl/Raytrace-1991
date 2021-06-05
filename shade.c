@@ -128,7 +128,7 @@ VEC source;
 COLOUR colour; {
 
   LIGHT *light = NULL;
-  static LIGHT *lastlight;
+  static LIGHT *lastlight = NULL;
 
   if ((light = (LIGHT *) calloc (sizeof(LIGHT),1)) == NULL)
     return (FALSE);

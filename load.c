@@ -16,17 +16,22 @@ FLT Gamma = 1.0/2.2; // television default
 
 void AddVert (point)
 POINT point; {
-  static int index;
+  static int index = 0;
 
 /*  MatVec(rotvert[index++], ViewMatrix, point); */
 
-  VecCopy(rotvert[index++], point);
+  if ( index >= 0 && index < 1024 )
+    VecCopy(rotvert[index++], point);
+  else {
+    fprintf(stderr,"EXIT: index out of bounds.\n");
+    exit(-1);
+    }
   }
 
 void AddSurf(kdiff, colour)
 FLT kdiff;
 COLOUR colour; {
-  static int index;
+  static int index = 0;
 
   fprintf(stderr,"kdiff %f\ncolour %lx\n",kdiff,(unsigned long)colour);
 
