@@ -13,6 +13,8 @@
 +-------------------------------------------------------------------------------
 */
 
+#define Hue 255.0
+
 void *Physbase();
 void pixel();
 void write_pbm_p4();
@@ -50,10 +52,10 @@ int main() {
     "WIDTH %d\n"
     "HEIGHT %d\n"
     "DEPTH 1\n"
-    "MAXVAL 64\n"
+    "MAXVAL %d\n"
     "TUPLTYPE GRAYSCALE\n"
     "ENDHDR\n",
-    Width,Height);
+    Width,Height,(int)Hue);
 
   for (y = Height ; --y >= 0 ;) {
     for (x = 0 ; x < Width; x++) {
@@ -66,7 +68,7 @@ int main() {
 
       t = Trace(colour, &ray);
 
-      monochrome = 64.0 * pow((colour[0]+colour[1]+colour[2])/64.0,Gamma);
+      monochrome = Hue * pow((colour[0]+colour[1]+colour[2])/Hue,Gamma);
       octet = (unsigned char)(monochrome);
 
       fwrite(&octet,sizeof(unsigned char),1,stdout);

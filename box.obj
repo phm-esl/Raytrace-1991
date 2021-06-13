@@ -1,8 +1,8 @@
  a simple cube with a diagonal cross on one face
  just an example of the format extected by file.c
 
-l -600 -200 500 2000000 2000000 2000000
-l  500  500 100 13000000 13000000 13000000 two lights
+l -600 -200 500 6000000 6000000 6000000
+l  500  500 100 39000000 39000000 39000000 two lights
 
 u 1 1 1 1 surface details
 
