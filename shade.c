@@ -17,7 +17,7 @@ typedef struct LIGHT {	/* a light source */
   struct LIGHT *next;	/* pointer to next light source in list */
   } LIGHT;
 
-LIGHT *Light0; /* pointer to first light in the linked list */
+LIGHT *Light0 = NULL; /* pointer to first light in the linked list */
 COLOUR Ambient = {0., 0., 0.};
 COLOUR SkyColour = {0., 0., 1.};
 COLOUR GrndColour = {1., 0., 0.};
@@ -60,7 +60,6 @@ int (*Intersect)(); {
   LIGHT *light;
   FLT distance, r;
   VEC M, normal;
-  SURF *surface;
   PTR object;
   POINT point;
 
@@ -69,7 +68,6 @@ int (*Intersect)(); {
   */
 
   VecCopy(normal, isect->normal);
-  surface = isect->surface;
   object = isect->object;
   VecCopy(point, isect->point);
 
@@ -128,23 +126,19 @@ VEC source;
 COLOUR colour; {
 
   LIGHT *light = NULL;
-  static LIGHT *lastlight = NULL;
 
   if ((light = (LIGHT *) calloc (sizeof(LIGHT),1)) == NULL)
     return (FALSE);
-  if (lastlight == NULL)
-    Light0 = light;
-  else
-    lastlight -> next = light;
 
-  light -> next = NULL;
   light -> IsSun = isasun;
   if (isasun)
     VecUnit(light -> source, source);
   else
     VecCopy(light -> source, source);
   VecCopy(light -> colour, colour);
-  lastlight = light;
+
+  light -> next = Light0;
+  Light0 = light;
   return (TRUE);
   }
 

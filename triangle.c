@@ -24,7 +24,7 @@ typedef struct TRIANGLE { /* Triangle object structure */
   struct SURF *surface;	/* pointer to a surface structure */
   } TRIANGLE;
 
-static TRIANGLE *Tri0 = NULL; /* pointer to first triangle in linked list */
+TRIANGLE *Tri0 = NULL; /* pointer to first triangle in linked list */
 
 /*
 +--------------------------------- RayPlane() ----------------------------------
@@ -46,6 +46,7 @@ RAY *ray;
 TRIANGLE *tri; {
   FLT vd;
   int r;
+  FLT vp;
 
   vd = VecDot(tri->normal, ray->Dir);
   if (vd == 0.)
@@ -55,7 +56,8 @@ TRIANGLE *tri; {
   else
     r = 1; /* triangle normal pointing to viewer */
 
-  *dist = -(VecDot(tri->normal, ray->Pos) + tri->D) / vd;
+  vp = VecDot(tri->normal, ray->Pos);
+  *dist = -(vp + tri->D) / vd;
 
   RayPoint (pnt, *dist, ray);
   return (r);
@@ -104,9 +106,6 @@ TRIANGLE *tri; {
 |
 +-------------------------------------------------------------------------------
 */
-
-int RayPLane();
-int TriInOut();
 
 int TriFirstHit(isect,ray)
 ISECT *isect;
@@ -160,7 +159,7 @@ RAY *ray; {
     VecCopy (isect -> point, N);
     isect -> object = (PTR)Tnear;
     isect -> surface = Tnear -> surface;
-    isect -> normal = Tnear -> normal;
+    VecCopy(isect -> normal,Tnear -> normal);
     return (-1);
     }
   else
@@ -191,9 +190,8 @@ RAY *ray; {
 
 
   FLT dist;
-  POINT M, N;
+  POINT M;
   register TRIANGLE *Tp;
-  int face;
 
 
   Tp = (TRIANGLE *)Tri0;
@@ -217,7 +215,7 @@ RAY *ray; {
           VecCopy (isect -> point, M);
           isect -> object = (PTR)Tp;
           isect -> surface = Tp -> surface;
-          isect -> normal = Tp -> normal;
+          VecCopy(isect -> normal,Tp -> normal);
           return (-1);
           }
         }
@@ -244,9 +242,7 @@ void Shade();
 FLT Trace(colour, ray)
 COLOUR colour;
 RAY *ray; {
-  extern COLOUR BackGround;
-
-  ISECT isect;
+  ISECT isect = {.0,{.0,.0,.0},{.0,.0,.0},NULL,NULL};
   FLT t;
 
   isect.object = NULL; /* the origin of the ray is not on an object */
@@ -283,15 +279,10 @@ SURF *surf; {
 
   VEC U, V, W;
   TRIANGLE *tp = NULL;
-  static TRIANGLE *oldTri = NULL;
   VEC AB, BC, CA;
 
   if ((tp = (TRIANGLE *) calloc (sizeof(TRIANGLE),1)) == NULL)
     return (FALSE);
-  if (oldTri == NULL)
-    Tri0 = tp;
-  else
-    oldTri -> next = tp;
 
   tp -> next = NULL;
   tp -> A = rotvert[A];
@@ -312,7 +303,10 @@ SURF *surf; {
 
   tp -> D = -VecDot(rotvert[A], tp -> normal);
   tp -> surface = surf;
-  oldTri = tp;
+
+  tp -> next = Tri0;
+  Tri0 = tp;
+
   return(TRUE);
   }
 

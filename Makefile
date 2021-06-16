@@ -2,7 +2,7 @@ all:		image
 		display raytrace.png
 
 image:		test
-		./test | convert pam:- raytrace.png
+		./test 2> debug.log | convert pam:- raytrace.png
 
 .PHONY: clean
 clean:
@@ -12,16 +12,16 @@ test:		test.o triangle.o toolbox.o shade.o load.o
 		cc -o test test.o triangle.o toolbox.o shade.o load.o -lm
 
 test.o:		test.c types.h toolbox.h
-		cc -c test.c
+		cc -Wall -c test.c
 
 triangle.o:	triangle.c types.h toolbox.h
-		cc -c triangle.c
+		cc -Wall -c triangle.c
 
 toolbox.o:	toolbox.c types.h toolbox.h
-		cc -c toolbox.c
+		cc -Wall -c toolbox.c
 
 shade.o:	shade.c types.h toolbox.h
-		cc -c shade.c
+		cc -Wall -c shade.c
 
 load.o:		load.c types.h toolbox.h
-		cc -c load.c
+		cc -Wall -c load.c

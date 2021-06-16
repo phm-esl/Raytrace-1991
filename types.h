@@ -26,7 +26,7 @@ typedef struct SURF {	/* a surface type */
 typedef struct ISECT {	/* an intersection point */
   FLT t;		/* line parameter at intersection (distance) */
   POINT point;		/* intersection point */
-  FLT *normal;		/* normal of the surface */
+  VEC normal;		/* normal of the surface */
   SURF *surface;	/* surface optics */
   PTR object;		/* pointer to obkect intersected */
   } ISECT;

@@ -69,7 +69,7 @@ char *filename; {
   POINT origin;
   VEC rotate;
   MAT matrix;
-  POINT point, vertex;
+  POINT point;
   COLOUR colour;
 
   /* load the object file */
