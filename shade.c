@@ -1,6 +1,6 @@
 #include "types.h"
 #include "toolbox.h"
-#include <malloc.h>
+#include <stdlib.h>
 
 /*
 +-------------------------------------------------------------------------------
@@ -31,9 +31,7 @@ COLOUR GrndColour = {1., 0., 0.};
 +-------------------------------------------------------------------------------
 */
 
-void BackGrnd(colour, ray)
-COLOUR colour;
-RAY ray; {
+void BackGrnd(COLOUR colour, RAY *ray) {
   // Clearly not implemented since 1991 (-:
   colour[0] = 1.;
   colour[1] = 0.;
@@ -52,10 +50,7 @@ RAY ray; {
 +-------------------------------------------------------------------------------
 */
 
-void Shade(colour, isect, Intersect)
-COLOUR colour;
-ISECT *isect;
-int (*Intersect)(); {
+void Shade(COLOUR colour, ISECT *isect, int (*Intersect)(ISECT *isect, RAY *ray)) {
   RAY ray;
   LIGHT *light;
   FLT distance, r;
@@ -120,10 +115,7 @@ int (*Intersect)(); {
 +-------------------------------------------------------------------------------
 */
 
-int AddLight(isasun, source, colour)
-int isasun;
-VEC source;
-COLOUR colour; {
+int AddLight(int isasun, VEC source, COLOUR colour) {
 
   LIGHT *light = NULL;
 

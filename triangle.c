@@ -1,9 +1,10 @@
 #include "types.h"
 #include "toolbox.h"
-#include <malloc.h>
+//#include <malloc.h> /* deprecated! */
 #include <math.h>
 #include <stdlib.h>
-#include <values.h>
+#include <stdio.h>
+//#include <values.h>
 //#include <macros.h> /* Atari ST only? */
 //#include <osbind.h>/* Atari ST only */
 
@@ -39,11 +40,7 @@ TRIANGLE *Tri0 = NULL; /* pointer to first triangle in linked list */
 +-------------------------------------------------------------------------------
 */
 
-static int RayPlane(pnt, dist, ray, tri)
-POINT pnt;
-FLT *dist;
-RAY *ray;
-TRIANGLE *tri; {
+static int RayPlane(POINT pnt, FLT *dist, RAY *ray, TRIANGLE *tri) {
   FLT vd;
   int r;
   FLT vp;
@@ -74,9 +71,7 @@ TRIANGLE *tri; {
 +-------------------------------------------------------------------------------
 */
 
-static int TriInOut(pnt, tri)
-POINT pnt;
-TRIANGLE *tri; {
+static int TriInOut(POINT pnt, TRIANGLE *tri) {
   VEC AP, BP, CP;
 
   VecSub(AP,tri->A,pnt);
@@ -107,9 +102,7 @@ TRIANGLE *tri; {
 +-------------------------------------------------------------------------------
 */
 
-int TriFirstHit(isect,ray)
-ISECT *isect;
-RAY *ray; {
+int TriFirstHit(ISECT *isect, RAY *ray) {
 
   FLT dist, smalldist;
   POINT M, N;
@@ -184,9 +177,7 @@ RAY *ray; {
 */
 
 
-int TriAnyHit(isect, ray)
-ISECT *isect;
-RAY *ray; {
+int TriAnyHit(ISECT *isect, RAY *ray) {
 
 
   FLT dist;
@@ -236,12 +227,10 @@ RAY *ray; {
 +-------------------------------------------------------------------------------
 */
 
-void BackGrnd();
-void Shade();
+void BackGrnd(COLOUR colour, RAY *ray);
+void Shade(COLOUR colour, ISECT *isect, int (*Intersect)());
 
-FLT Trace(colour, ray)
-COLOUR colour;
-RAY *ray; {
+FLT Trace(COLOUR colour, RAY *ray) {
   ISECT isect = {.0,{.0,.0,.0},{.0,.0,.0},NULL,NULL};
   FLT t;
 
@@ -272,10 +261,7 @@ RAY *ray; {
 +-------------------------------------------------------------------------------
 */
 
-int AddTriangle(rotvert, A, B, C, surf)
-POINT *rotvert;
-int A,B,C;
-SURF *surf; {
+int AddTriangle(POINT *rotvert, int A, int B, int C, SURF *surf) {
 
   VEC U, V, W;
   TRIANGLE *tp = NULL;

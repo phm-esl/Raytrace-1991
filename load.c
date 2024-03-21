@@ -14,8 +14,7 @@ FLT Gamma = 1.0/2.2; // television default
 
 /*----------------------------------------------------------------------------*/
 
-void AddVert (point)
-POINT point; {
+void AddVert (POINT point) {
   static int index = 0;
 
 /*  MatVec(rotvert[index++], ViewMatrix, point); */
@@ -28,9 +27,7 @@ POINT point; {
     }
   }
 
-void AddSurf(kdiff, colour)
-FLT kdiff;
-COLOUR colour; {
+void AddSurf(FLT kdiff, COLOUR colour) {
   static int index = 0;
 
   fprintf(stderr,"kdiff %f\ncolour %lx\n",kdiff,(unsigned long)colour);
@@ -47,8 +44,7 @@ COLOUR colour; {
     }
   }
 
-void rem(fp)
-FILE *fp; {
+void rem(FILE *fp) {
   char c;
   for (;;) {
     c = fgetc (fp);
@@ -57,10 +53,8 @@ FILE *fp; {
     }
   }
 
-int get_obj (filename)
-char *filename; {
-  FILE *fp, *fopen();
-  int fclose();
+int get_obj (char *filename) {
+  FILE *fp;
   char c;
   int p, q, r, s;
   FLT kdiff;
@@ -185,10 +179,7 @@ char *filename; {
 /*============================================================================*/
 
 
-void write_pbm_p4(filename,x,y,data)
-char *filename;
-int x, y;
-char *data;{
+void write_pbm_p4(char *filename, int x, int y, char *data) {
   int line, length;
   FILE *out;
   if ((out = fopen(filename,"wb")) != NULL) {

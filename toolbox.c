@@ -14,22 +14,19 @@
 
 /*------------------------------ vector length -------------------------------*/
 
-FLT VecLen(A)
-VEC A; {
+FLT VecLen(VEC A) {
   return (sqrt(A[0]*A[0] + A[1]*A[1] + A[2]*A[2]));
   }
 
 /*------------------------------- dot product --------------------------------*/
 
-FLT VecDot(A, B)
-VEC A, B; {
+FLT VecDot(VEC A, VEC B) {
   return (A[0]*B[0] + A[1]*B[1] + A[2]*B[2]);
   }
 
 /*------------------------- cross product W = U x V --------------------------*/
 
-void VecCross(W, U, V)
-VEC U, V, W; {
+void VecCross(VEC W, VEC U, VEC V) {
   FLT x, y, z;
 
   x = U[1]*V[2] - V[1]*U[2];
@@ -42,8 +39,7 @@ VEC U, V, W; {
 
 /*---------------------------- vector copy B = A -----------------------------*/
 
-void VecCopy(B, A)
-VEC A, B; {
+void VecCopy(VEC B, VEC A) {
   B[0] = A[0];
   B[1] = A[1];
   B[2] = A[2];
@@ -51,8 +47,7 @@ VEC A, B; {
 
 /*------------------------ vector addition C = A + B -------------------------*/
 
-void VecAdd(C, A, B)
-VEC A, B, C; {
+void VecAdd(VEC C, VEC A, VEC B) {
   C[0] = A[0] + B[0];
   C[1] = A[1] + B[1];
   C[2] = A[2] + B[2];
@@ -60,8 +55,7 @@ VEC A, B, C; {
 
 /*----------------------- vector subtraction C = A - B -----------------------*/
 
-void VecSub(C, A, B)
-VEC A, B, C; {
+void VecSub(VEC C, VEC A, VEC B) {
   C[0] = A[0] - B[0];
   C[1] = A[1] - B[1];
   C[2] = A[2] - B[2];
@@ -69,9 +63,7 @@ VEC A, B, C; {
 
 /*---------------------- linear combination C = aA + bB ----------------------*/
 
-void VecComb(C, a, A, b, B)
-VEC A, B, C;
-FLT a, b; {
+void VecComb(VEC C, FLT a, VEC A, FLT b, VEC B) {
   C[0] = a*A[0] + b*B[0];
   C[1] = a*A[1] + b*B[1];
   C[2] = a*A[2] + b*B[2];
@@ -79,9 +71,7 @@ FLT a, b; {
 
 /*---------------------- add scalar multiple C = aA + B ----------------------*/
 
-void VecAddS(C, a, A, B)
-VEC A, B, C;
-FLT a; {
+void VecAddS(VEC C, FLT a, VEC A, VEC B) {
   C[0] = a*A[0] + B[0];
   C[1] = a*A[1] + B[1];
   C[2] = a*A[2] + B[2];
@@ -89,8 +79,7 @@ FLT a; {
 
 /*------------ vector unitise (normalise) B = A / |A|, returns |A| -----------*/
 
-FLT VecUnit(B, A)
-VEC A, B; {
+FLT VecUnit(VEC B, VEC A) {
   FLT n;
 
   n = VecLen(A);
@@ -103,11 +92,18 @@ VEC A, B; {
 
 /*----------------------------------------------------------------------------*/
 
-void MatMulti(Ans, Mat1, Mat2)
-MAT Ans, Mat1, Mat2; {
+void MatCopy(MAT Dest, MAT Src) {
+  register int i;
+
+  for (i = 0; i < 16; i++)
+    Dest[i] = Src[i];
+  }
+
+/*----------------------------------------------------------------------------*/
+
+void MatMulti(MAT Ans, MAT Mat1, MAT Mat2) {
   register int row, col, r, c;
   MAT temp;
-  void MatCopy();
 
   for (row = 0; row < 16; row += 4) {
     for (col = 0; col < 4; col++) {
@@ -121,19 +117,7 @@ MAT Ans, Mat1, Mat2; {
 
 /*----------------------------------------------------------------------------*/
 
-void MatCopy(Dest, Src)
-MAT Dest, Src; {
-  register int i;
-
-  for (i = 0; i < 16; i++)
-    Dest[i] = Src[i];
-  }
-
-/*----------------------------------------------------------------------------*/
-
-void MatVec(Vdest, Mat, Vsrc)
-MAT Mat;
-VEC Vdest, Vsrc; {
+void MatVec(VEC Vdest, MAT Mat, VEC Vsrc) {
   FLT x, y, z;
 
   x = Mat[0] * Vsrc[0] + Mat[1] * Vsrc[1] + Mat[2] * Vsrc[2] + Mat[3];
@@ -147,9 +131,7 @@ VEC Vdest, Vsrc; {
 
 /*----------------------------------------------------------------------------*/
 
-void SetRotation(matrix, rotate)
-MAT matrix;
-VEC rotate; {
+void SetRotation(MAT matrix, VEC rotate) {
   MAT temp;
   FLT cosine, sinus;
   register int i;
